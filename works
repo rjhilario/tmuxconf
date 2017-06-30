@@ -1,0 +1,42 @@
+tmux has-session -t works
+if [ $? != 0 ]
+then
+   tmux new-session -s works -n primary -d
+   tmux send-keys -t works 'clear' C-m
+   tmux send-keys -t works 'cd ~' C-m
+   
+   tmux split-window -h -p 67 -t works
+   tmux split-window -v -t works 
+   tmux select-pane -t 0 
+   tmux split-window -v -p 33 -t works
+
+   tmux send-keys -t works:0.0 'clear' C-m
+   tmux send-keys -t works:0.0 'ifconfig enp0s25' C-m
+   tmux send-keys -t works:0.0 'traceroute messaging.ibm.com' C-m 
+
+   tmux send-keys -t works:0.1 'clear' C-m
+   tmux send-keys -t works:0.1 'sudo su' C-m 
+   tmux send-keys -t works:0.1 'tcpdump -i enp0s25' C-m
+   
+   tmux send-keys -t works:0.2 'clear' C-m
+   tmux send-keys -t works:0.2 'vi ~/Documents/Files/IBM/network2' C-m
+
+   tmux send-keys -t works:0.3 'clear' C-m
+   tmux send-keys -t works:0.3 'sudo su' C-m
+   tmux send-keys -t works:0.3 'watch "netstat -tuplan | grep ESTABLISHED"' C-m  
+  
+   tmux new-window -n secondary -t works
+   tmux split-window -h -p 68 -t works
+   tmux send-keys -t works:1.1 'clear' C-m
+   tmux send-keys -t works:1.1 'watch "dmesg | tail -50f"' C-m
+   tmux select-pane -t 0
+   tmux split-window -v -t works 
+   
+   tmux new-window -n tertiary -t works 
+   tmux split-window -v -t works
+   tmux select-window -t works:0   
+   
+   
+
+fi
+tmux attach -t works
